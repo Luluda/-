@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RANDOM</title>
+	<style>
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+		body{
+			display: flex;
+			justify-content: center;
+			align-items:center;
+			font-family: Microsoft YaHei;
+			font-size: 150%;
+			padding: 0;
+			flex-direction: column;
+		}
+		td{
+			
+		}
+		input{
+			font-size: 150%;
+			text-align: center;
+			height: 30px;
+			border:2px solid #333;
+			background-color:#ccc;
+		}
+		.header{
+			display: flex;
+			position: absolute;
+			top:0;
+			width:100%;
+			height: 100px;
+			color:white;
+			background-color: #ff5f41;
+			margin: 0 0 20px 0;
+			text-align: center;
+		}
+		.button{
+			font-size:100%; 
+			border-radius:0.25em;
+			background-color: #ff5f41;
+			border: 2px solid #333;
+			width:100px;
+			height: 35px;
+			text-align: center;
+			margin:0 30px;
+		}
+		.button:hover{
+			background-color: #FF8C69;
+		}
+		.result{
+			border:none;
+			background-color: transparent;
+			font-size:200%;
+			height: 50px;
+		}
+
+		.digits{
+		display:inline-block;
+		height:30px;
+		margin-right:50px;
+	}
+	.digits i{
+		background:url(numbers.png) no-repeat;
+		display:inline-block;
+		float:left;
+		height:30px;
+		width:25px;
+		margin-left: 5px;
+	}
+	.digits b{
+		background:url(numbers.png) no-repeat 0 -398px;
+		display:inline-block;
+		float:left;
+		height:30px;
+		width:10px;
+	}
+
+	</style>
+</head>
+<body>
+	<div class="header">
+		<h4>Miss Liu's English Class</h4> 
+		<h2 style="margin-left:200px;">Who is the lucky dog?</h2>
+	</div>
+	<table border="2" cellpadding="2" cellspacing="0" bgcolor="#FFFFFF" bordercolor="#000000" bordercolordark="#0768AC" bordercolorlight="#0768AC" style="height:200px;">
+<tr><td>
+
+<form name="generate">
+  <table BORDER="0" CELLPADDING="0" CELLSPACING="0" BGCOLOR="#FFFFFF" style="width:600px;height:400px;">
+    <tr>
+      <td align="right">Enter a lower limit:&nbsp;</td>
+      <td><input TYPE="Text" name="lower" size="5"></td>
+    </tr>
+    <tr>
+      <td ALIGN="RIGHT">Enter an upper limit:&nbsp;</td>
+      <td style="vertical-align:bottom;"><input TYPE="Text" name="upper" size="5"><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="line-height:0;"><input class="button" TYPE="button" style="margin-left:175px;margin-right:-19px;" name="send_it" VALUE="ENTER" onClick="chooseRandom(this.form)">&nbsp; &nbsp; <input class="button" TYPE="reset" VALUE="CLEAR" onClick="clearForm(this.form)" style="font-size:100%;"><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td ALIGN="RIGHT">Student Number: &nbsp;</td>
+      <td><div id="a" class="result, digits" TYPE="text" NAME="result" SIZE="4"></div></td>
+    </tr>
+  </table>
+</form>
+</td></tr>
+</table><br>
+
+</body>
+<script src="jquery-3.1.1.min.js"></script>
+<script src="layer/layer.js"></script>
+<script LANGUAGE="JavaScript">
+//滚动
+	function setNumber(dom, number){
+		var n = String(number),len = n.length;
+		//如果新的数字短于当前的，要移除多余的i
+		if(dom.find("i").length > len){
+			dom.find("i:gt(" + (len - 1) + ")").remove();
+		}
+		//移除千分位分隔符
+		dom.find("b").remove();
+		//开始填充每一位
+		for(var i=0;i<len;++i){
+			//位数不足要补
+			if(dom.find("i").length < len){
+				dom.append("<i></i>");
+			}
+			var obj = dom.find("i").eq(i);
+			var y = -40 * parseInt(n.charAt(i), 10);
+			//加分隔符
+			if(i < len - 1 && (len - i - 1) % 3 == 0)
+				$("<b></b>").insertAfter(obj);
+			//利用动画变换数字
+			obj.animate({ backgroundPositionY:y+"px" }, 350);
+		}
+	}
+	
+		function chooseRandom(form) {
+		var m = parseInt(form.lower.value);
+ 		var n = parseInt(form.upper.value) - m;
+		var output = Math.round(Math.random() * n) + m;
+		setNumber($("#a"),output);
+		setTimeout(Tips,1000);
+		function Tips(){
+			layer.msg("Now it's your show time!  No. "+ output+"!");
+		}
+}
+</script>
+
+</html>
